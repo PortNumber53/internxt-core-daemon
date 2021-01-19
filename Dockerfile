@@ -22,5 +22,17 @@ RUN export STORJ_NETWORK=INXT && \
     npm i && npm link
 
 
+RUN groupadd money
+RUN useradd -g money -ms /bin/bash money
+
+RUN mkdir -p /storage
+RUN chown -R money:money /storage
+
+USER money
+WORKDIR /home/money
+ENV STORJ_NETWORK=INXT
+
+# RUN /usr/bin/xcore daemon
+
 EXPOSE 53396
-ENTRYPOINT ["/usr/bin/xcore"]
+ENTRYPOINT ["/usr/bin/xcore", "daemon", "--foreground"]
